@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyApplication" parent="android:Theme.DeviceDefault.NoActionBar">
+        <!-- Transparent nav bar -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        
+        <!-- Optional: transparent status bar too -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        
+        <!-- Required for Android 10+ cutout support -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+</resources>
