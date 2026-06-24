@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.AppDatabase
 import com.example.data.Expense
 import com.example.data.ExpenseRepository
+import com.example.data.DebtDue
+import com.example.data.DebtDueRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,6 +19,7 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ExpenseRepository
+    private val debtDueRepository: DebtDueRepository
     private val prefs = application.getSharedPreferences("expense_tracker_prefs", Context.MODE_PRIVATE)
     private val database: AppDatabase
 
@@ -33,6 +36,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         database = AppDatabase.getDatabase(application)
         repository = ExpenseRepository(database.expenseDao())
+        debtDueRepository = DebtDueRepository(database.debtDueDao())
         
         if (!biometricsEnabled.value) {
             isAuthenticated.value = true
@@ -40,6 +44,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val expenses: StateFlow<List<Expense>> = repository.allExpenses.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    val debtsDues: StateFlow<List<DebtDue>> = debtDueRepository.allDebtsDues.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
@@ -175,6 +185,42 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 onComplete(false, 0)
             }
+        }
+    }
+
+    fun addDebtDue(personName: String, amount: Double, description: String, type: String, dueDate: Long?) {
+        viewModelScope.launch {
+            val date = System.currentTimeMillis()
+            val newDebtDue = DebtDue(
+                personName = personName,
+                amount = amount,
+                description = description,
+                date = date,
+                dueDate = dueDate,
+                type = type
+            )
+            debtDueRepository.insert(newDebtDue)
+        }
+    }
+
+    fun settleDebtDue(debtDue: DebtDue, logAsExpense: Boolean) {
+        viewModelScope.launch {
+            val updated = debtDue.copy(isCleared = true)
+            debtDueRepository.update(updated)
+
+            if (logAsExpense && debtDue.type == "DEBT") {
+                addExpense(
+                    amount = debtDue.amount,
+                    description = "Repaid: ${debtDue.personName} (${debtDue.description})",
+                    category = "Debt Repayment"
+                )
+            }
+        }
+    }
+
+    fun deleteDebtDue(id: Int) {
+        viewModelScope.launch {
+            debtDueRepository.delete(id)
         }
     }
 

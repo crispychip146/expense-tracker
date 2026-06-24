@@ -1,4 +1,4 @@
-# Expense Tracker (v3.7)
+# Expense Tracker (v4.2)
 
 [📥 **Download Latest Release APK**](file:///d:/expense-tracker/app/build/outputs/apk/release/app-release.apk)
 
@@ -9,17 +9,19 @@ A modern, offline-first personal finance and expense tracking Android applicatio
 ## Key Features
 
 - **Transaction Management**: Effortlessly log, categorize, and track daily expenses.
+- **Debts & Receivables Tracking**: Easily log and track outstanding liabilities (money you owe to others and money others owe to you). Includes optional repayment integration where clearing a debt can automatically log a transaction expense under *"Debt Repayment"*.
 - **Budget Tracking & Alerts**: Set a custom monthly budget. The app dynamically tracks spending against this limit and alerts you via local system notifications when you exceed 80% or 100% of your budget.
 - **Smart Push Notifications**: Automated daily push reminders to keep you on budget without instant logging spam:
   - **8:30 AM**: Previous day transactions breakdown by category.
   - **11:00 PM**: Today-vs-yesterday comparison report with smart budget suggestions.
-- **Data Insights & Analytics**: Visual charts built via Jetpack Compose Canvas (Line and Bar charts) summarizing category breakdowns. Features a **Week | Month** toggle to easily switch spending trend views.
-- **Interactive Filtering**: Filter recent transaction logs directly from the home tab by **All**, **Today**, **This Week**, or **This Month**.
+- **Liability & Spending Analytics**: Redesigned Stats page featuring:
+  - **Spending Trends**: Category breakdown and weekly/monthly trends.
+  - **Liability Position**: Displays Net Position (+Receivable/-Payable), Debt-to-Receivable composition ratio, settlement progress indicators, overdue warning alerts, and top partners breakdown.
+- **Interactive Filtering**: Filter recent transaction and liability logs directly by **All**, **Today**, **This Week**, or **This Month**.
 - **Biometric Security**: Protect sensitive financial records with fingerprint authentication.
-- **Data Portability**: Import and export transaction history:
-  - **Excel Import/Export**: Import from templates using a clean, responsive Excel Import Guide table. Export to Excel (.xlsx).
-  - **PDF Export**: Generate and download formatted PDF logs of your transaction history.
-- **Wipe & Confirmation Guards**: Added confirmation dialogs for deletes and data wipes to avoid accidental data loss.
+- **Unified Data Portability**: Consolidated Excel and PDF utilities that export all transaction logs, debts, and receivables together.
+- **Wipe & Confirmation Guards**: Added clear confirmation dialogs for deletions and data resets.
+- **Scroll Performance**: Optimized view caching and stable item keys for fluid list scrolling.
 
 ---
 

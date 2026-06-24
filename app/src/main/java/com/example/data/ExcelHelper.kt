@@ -143,6 +143,66 @@ object ExcelHelper {
         workbook.close()
     }
 
+    fun exportAllData(outputStream: OutputStream, expenses: List<Expense>, debtsDues: List<DebtDue>) {
+        val workbook = HSSFWorkbook()
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        
+        // Sheet 1: Expenses
+        val sheet1 = workbook.createSheet("Expenses")
+        val headerRow1 = sheet1.createRow(0)
+        val headers1 = listOf("Date", "Category", "Description", "Amount")
+        for (i in headers1.indices) {
+            val cell = headerRow1.createCell(i)
+            cell.setCellValue(headers1[i])
+        }
+
+        var rowIndex1 = 1
+        for (expense in expenses) {
+            val row = sheet1.createRow(rowIndex1++)
+            row.createCell(0).setCellValue(sdf.format(Date(expense.date)))
+            row.createCell(1).setCellValue(expense.category)
+            row.createCell(2).setCellValue(expense.description)
+            row.createCell(3).setCellValue(expense.amount)
+        }
+
+        sheet1.setColumnWidth(0, 20 * 256)
+        sheet1.setColumnWidth(1, 15 * 256)
+        sheet1.setColumnWidth(2, 30 * 256)
+        sheet1.setColumnWidth(3, 15 * 256)
+        // Sheet 2: Debts & Receivables
+        val sheet2 = workbook.createSheet("Debts & Receivables")
+        val headerRow2 = sheet2.createRow(0)
+        val headers2 = listOf("Date", "Person", "Type", "Description", "Amount", "Due Date", "Status")
+        for (i in headers2.indices) {
+            val cell = headerRow2.createCell(i)
+            cell.setCellValue(headers2[i])
+        }
+
+        var rowIndex2 = 1
+        for (item in debtsDues) {
+            val row = sheet2.createRow(rowIndex2++)
+            row.createCell(0).setCellValue(sdf.format(Date(item.date)))
+            row.createCell(1).setCellValue(item.personName)
+            row.createCell(2).setCellValue(item.type)
+            row.createCell(3).setCellValue(item.description)
+            row.createCell(4).setCellValue(item.amount)
+            val dueDateStr = item.dueDate?.let { sdf.format(Date(it)) } ?: "N/A"
+            row.createCell(5).setCellValue(dueDateStr)
+            row.createCell(6).setCellValue(if (item.isCleared) "Settled" else "Pending")
+        }
+
+        sheet2.setColumnWidth(0, 20 * 256)
+        sheet2.setColumnWidth(1, 20 * 256)
+        sheet2.setColumnWidth(2, 10 * 256)
+        sheet2.setColumnWidth(3, 30 * 256)
+        sheet2.setColumnWidth(4, 15 * 256)
+        sheet2.setColumnWidth(5, 20 * 256)
+        sheet2.setColumnWidth(6, 15 * 256)
+
+        workbook.write(outputStream)
+        workbook.close()
+    }
+
     private fun isRowEmpty(row: Row): Boolean {
         for (c in row.firstCellNum until row.lastCellNum) {
             val cell = row.getCell(c)
