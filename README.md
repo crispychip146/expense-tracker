@@ -1,6 +1,6 @@
 # Expense Tracker (v3.7)
 
-[📥 **Download Latest Release APK**](app/build/outputs/apk/release/app-release.apk)
+[📥 **Download Latest Release APK**](file:///d:/expense-tracker/app/build/outputs/apk/release/app-release.apk)
 
 A modern, offline-first personal finance and expense tracking Android application. Designed with Jetpack Compose, this application provides users with comprehensive budget controls, real-time analytics, secure biometric authentication, and data export/import utilities.
 
