@@ -75,10 +75,7 @@ The application is built on top of modern Android components:
 - Android SDK 26 (Android 8.0 Oreo) or newer (Minimum API level)
 
 ### Installation & Execution
-1. Clone or download this repository:
-   ```bash
-   git clone https://github.com/example/expense-tracker.git
-   ```
+1. Clone or download this repository.
 2. Open Android Studio and select **Open**, selecting the directory of this project.
 3. Allow Gradle to complete dependency sync and build configuration.
 4. Connect an Android Emulator or physical test device and run the project.
