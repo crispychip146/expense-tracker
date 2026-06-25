@@ -1,8 +1,9 @@
 name: Release APK
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -36,12 +37,13 @@ jobs:
             exit 1
           fi
           echo "Found APK at $APK_PATH"
-          mv "$APK_PATH" "app/build/outputs/apk/release/expense-tracker-${{ github.event.release.tag_name }}.apk"
+          mv "$APK_PATH" "app/build/outputs/apk/release/expense-tracker-${{ github.ref_name }}.apk"
         shell: bash
 
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: app/build/outputs/apk/release/expense-tracker-${{ github.event.release.tag_name }}.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: app/build/outputs/apk/release/expense-tracker-${{ github.ref_name }}.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false

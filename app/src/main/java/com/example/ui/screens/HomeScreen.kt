@@ -1042,7 +1042,9 @@ fun HomeTab(
                         fontWeight = FontWeight.Black,
                         color = TextPrimary,
                         letterSpacing = (-1).sp
-                    )
+                    ),
+                    maxLines = 1,
+                    softWrap = false
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 val spentText = String.format(Locale.US, "%,.2f", totalAmount)
